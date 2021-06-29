@@ -16,41 +16,64 @@
 <main>
     <div class="container">
         <br />
+        <br />
     </div>
 
     <div class="container-xl">
         <div class="table-responsive">
+            Total : {{ job_count }} job{{ job_count > 1 ? 's' : '' }}
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Name</td>
-                        <th scope="col">Started</td>
-                        <th scope="col">Finished</td>
-                        <th scope="col">Status</td>
+                        <th scope="col">Name</th>
+                        <th scope="col">Started</th>
+                        <th scope="col">Finished</th>
+                        <th scope="col" class="text-center">Duration</th>
+                        <th scope="col" class="text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody>
 {% for job in jobs %}
                     <tr class="table-{{ job.status == 'failed' ? 'danger' : 'success'}}">
                         <td>{{ job.name }}</td>
-                        <td>{{ job.started }}</td>
-                        <td>{{ job.finished }}</td>
-                        <td class="center">{% if job.status == 'failed' %}
+                        <td>{{ job.started|date("d/m/Y H\\hi", "Europe/Paris") }}</td>
+                        <td>{{ job.finished|date("d/m/Y H\\hi", "Europe/Paris")  }}</td>
+                        <td class="text-center">{{ job.elapsed }}s</td>
+                        <td class="text-center">{% if job.status == 'failed' %}
                             <img label="{{ job.status }}" src="{{ img_failed }}" height="20px" />
                             {% else %}
                             <img label="{{ job.status }}" src="{{ img_success }}" height="20px" />
                             {% endif %}
+                            {# <a href="http://awx.lepesant.com/#/jobs/playbook/{{ job.id }}/output/" target="_new"> #}
+                            <a href="{{ job.id | awxlink }}" target="_new">
+                                <img label="Bootstrap" src="{{ img_console }}" width="20px" />
+                            </a>
                         </td>
                     </tr>
 {% endfor %}
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="4">Total : {{ job_count }} job{{ job_count > 1 ? 's' : '' }}</td>
+                    <td>{% if show_previous_button %}<a href="{{ previous_page }}"><button type="button" class="btn btn-outline-info btn-sm">Previous</button></a>{% endif %}</td>
+                    <td colspan="3">
+{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+<div class="col-auto">
+{{ form_widget(form.page_size, { 'attr': {'class': 'form-select form-select-sm' }}) }}
+</div>
+<div class="col-auto">
+{{ form_label(form.page_size, null, {'label_attr': {'class': 'mr-sm-2'}}) }}
+</div>
+<div class="col-auto">
+{{ form_widget(form.send, { 'attr': {'class': 'btn btn-primary btn-sm' }}) }}
+</div>
+{{ form_end(form) }}
+                    </td>
+                    <td>{% if show_next_button %}<a href="{{ next_page }}"><button type="button" class="btn btn-outline-info btn-sm">Next</button></a>{% endif %}</td>
                 </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 </main>
+
 {% endblock %}

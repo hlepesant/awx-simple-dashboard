@@ -3,7 +3,13 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
+# $_password = 'kL7tZEtdxHuAhdV';
+# $_username = 'symfony';
+# TOWER_USERNAME=$_username TOWER_PASSWORD=$_password TOWER_HOST=http://127.0.0.1/ awx login
+
 parameters:
+    awx.token: 'hc5FIGZuwhIUEkmJASA45qM60dgb18'
 
 services:
     # default configuration for services in *this* file
@@ -23,3 +29,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\AwxGenerator:
+        arguments:
+            $token: '%awx.token%'
+
+#   app.twig_extension:
+#       class: App\Twig\AwxExtension
+#       public: false
+#       tags:
+#           - { name: twig.extension }
