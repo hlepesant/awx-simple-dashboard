@@ -12,7 +12,11 @@ Class AwxGenerator
             'auth_bearer' => $token,
         ]); 
 
-        $response = $client->request('GET', 'http://127.0.0.1/api/v2/jobs/');
+        $response = $client->request('GET', 'http://127.0.0.1/api/v2/jobs/', [
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ]);
         # $content = $response->getContent();
         # $content = $response->toArray();
         # return $content;
