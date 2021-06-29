@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AWX List jobs!{% endblock %}
+
+{% block body %}
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img label="Bootstrap" src="{{ logo }}" width="90px" />
+            </a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <br />
+    </div>
+
+    <div class="container-xl">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</td>
+                        <th scope="col">Started</td>
+                        <th scope="col">Finished</td>
+                        <th scope="col">Status</td>
+                    </tr>
+                </thead>
+                <tbody>
+{% for job in jobs %}
+                    <tr class="table-{{ job.status == 'failed' ? 'danger' : 'success'}}">
+                        <td>{{ job.name }}</td>
+                        <td>{{ job.started }}</td>
+                        <td>{{ job.finished }}</td>
+                        <td class="center">{% if job.status == 'failed' %}
+                            <img label="{{ job.status }}" src="{{ img_failed }}" height="20px" />
+                            {% else %}
+                            <img label="{{ job.status }}" src="{{ img_success }}" height="20px" />
+                            {% endif %}
+                        </td>
+                    </tr>
+{% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4">Total : {{ job_count }} job{{ job_count > 1 ? 's' : '' }}</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock %}
