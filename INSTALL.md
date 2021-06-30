@@ -81,7 +81,8 @@ parameters:
 
 ```
 
-To create a AWX token :
+
+### To create a AWX token :
 1. Create a user in AWX web interface with  "Sustem Auditor" role
 2. Install awx CLI 
 3. Run :
