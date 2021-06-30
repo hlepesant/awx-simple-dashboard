@@ -70,3 +70,21 @@ yarn install
 yarn encore production
 npm run build
 ```
+
+## Edit config/services.yaml
+
+Change parameters section to match your installation :
+```
+parameters:
+    awx.token: 'AWX SECRET TOKEN'
+    awx.url: 'http://AWX_URL'
+
+```
+
+To create a AWX token :
+1. Create a user in AWX web interface with  "Sustem Auditor" role
+2. Install awx CLI 
+3. Run :
+```
+TOWER_USERNAME=$_username TOWER_PASSWORD=$_password TOWER_HOST=http://127.0.0.1/ awx login
+```

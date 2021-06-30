@@ -10,6 +10,7 @@
 
 parameters:
     awx.token: 'hc5FIGZuwhIUEkmJASA45qM60dgb18'
+    awx.url: 'http://192.168.0.225'
 
 services:
     # default configuration for services in *this* file
@@ -33,6 +34,7 @@ services:
     App\Service\AwxGenerator:
         arguments:
             $token: '%awx.token%'
+            $awx_url: '%awx.url%'
 
 #   app.twig_extension:
 #       class: App\Twig\AwxExtension
