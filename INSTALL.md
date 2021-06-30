@@ -18,7 +18,7 @@ REquire PHP modules :
 
 ## Install Symfony CLI
 ```
-sudo apt-get install git unzip
+sudo apt-get install git unzip gpg
 wget https://get.symfony.com/cli/installer -O - | bash
 sudo mv /home/hugues/.symfony/bin/symfony /usr/local/bin/symfony
 ```
@@ -43,7 +43,6 @@ sudo apt-get install -y nodejs
 
 ## Install Yarn
 ```
-apt-get install gpg2
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 apt-get update
