@@ -68,7 +68,11 @@
 </div>
 {{ form_end(form) }}
                     </td>
-                    <td>{% if show_next_button %}<a href="{{ next_page }}"><button type="button" class="btn btn-outline-info btn-sm">Next</button></a>{% endif %}</td>
+                    <td>
+{% if show_next_button %}<a href="{{ next_page }}"><button type="button" class="btn btn-outline-info btn-sm">Next</button></a>{% endif %}
+&nbsp;
+{{ position }}
+</td>
                 </tr>
                 </tfoot>
             </table>

@@ -24,13 +24,9 @@ class AwxController extends AbstractController
     {
         $order_by = '-started';
         $page_size = 10;
-        #if ($page == 0) $page = 1;
 
         $defaultData = ['page_size' => $page_size];
         $form = $this->createFormBuilder($defaultData)
-            # ->add('page', HiddenType::class, [
-            #     'data' => $page,
-            # ])
             ->add('page_size', ChoiceType::class, [
                 'label' => 'Items by page',
                 'choices'  => [
@@ -50,7 +46,6 @@ class AwxController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $page_size = $data['page_size'];
-            # $page = $data['page'];
         }
 
         $jobs = $awxGenerator->getAwxJobs($order_by, $page_size, $page);
@@ -82,6 +77,8 @@ class AwxController extends AbstractController
 
             'next_page' => $next_page,
             'show_next_button' => ($page < ($jobs['count']/$page_size) ? true : false),
+
+            'position' => sprintf("%d/%d", $page, ceil($jobs['count']/$page_size)),
 
             'form' => $form->createView(),
         ]);
