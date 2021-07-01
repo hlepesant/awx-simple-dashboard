@@ -45,7 +45,7 @@
                             <img label="{{ job.status }}" src="{{ img_success }}" height="20px" />
                             {% endif %}
                             {# <a href="http://awx.lepesant.com/#/jobs/playbook/{{ job.id }}/output/" target="_new"> #}
-                            <a href="{{ job.id | awxlink }}" target="_new">
+                            <a href="{{ job.id | awxlink(awx_url) }}" target="_new">
                                 <img label="Bootstrap" src="{{ img_console }}" width="20px" />
                             </a>
                         </td>

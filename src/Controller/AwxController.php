@@ -72,6 +72,8 @@ class AwxController extends AbstractController
             'job_count' => $jobs['count'],
             'jobs' => $jobs['results'],
 
+            'awx_url' => $this->getParameter('awx.url'),
+
             'show_previous_button' => ($page > 1 ? true : false),
             'previous_page' => $previous_page,
 

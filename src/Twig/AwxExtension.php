@@ -14,8 +14,8 @@ class AwxExtension extends AbstractExtension
         ];
     }
     
-    public function awxlink($jobid)
+    public function awxlink($jobid, $awx_url)
     {
-        return sprintf("http://awx.lepesant.com/#/jobs/playbook/%d/output/", $jobid);
+        return sprintf("%s/#/jobs/playbook/%d/output/", $awx_url, $jobid);
     }
 }
