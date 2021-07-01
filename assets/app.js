@@ -16,3 +16,7 @@ import './bootstrap';
 //console.log('Hello Webpack Encore! Edit me in assets/app.js');
 
 bsCustomFileInput.init();
+
+$(document).ready(function() {
+    $('[data-toggle="popover"]').popover();
+});

@@ -54,8 +54,6 @@ class AwxController extends AbstractController
             return $this->redirectToRoute('awx');
         }
 
-        $package = new PathPackage('/static/images', new StaticVersionStrategy('v1'));
-
         $previous_page = $this->generateUrl( 'awx', [
             'page' => ($page - 1),
         ]);
@@ -64,25 +62,32 @@ class AwxController extends AbstractController
             'page' => ($page + 1),
         ]);
 
+        $package = new PathPackage('/static/images', new StaticVersionStrategy('v1'));
+	    $status_images = array(
+	    	'canceled' 	    => $package->getUrl('canceled.png'),
+	    	'error' 	    => $package->getUrl('error.png'),
+	    	'failed' 	    => $package->getUrl('failed.png'),
+	    	'new' 		    => $package->getUrl('new.png'),
+	    	'pending' 	    => $package->getUrl('pending.png'),
+	    	'running' 	    => $package->getUrl('running.png'),
+	    	'successful' 	=> $package->getUrl('successful.png'),
+	    	'waiting' 	    => $package->getUrl('waiting.png'),
+	    	'warning' 	    => $package->getUrl('warning.png'),
+	    );
+
         return $this->render('awx/index.html.twig', [
-            'logo' => $package->getUrl('logo-login.png'),
-            'img_success' => $package->getUrl('confirm.png'),
-            'img_failed' => $package->getUrl('cancel.png'),
-            'img_console' => $package->getUrl('console.png'),
-            'job_count' => $jobs['count'],
-            'jobs' => $jobs['results'],
-
-            'awx_url' => $this->getParameter('awx.url'),
-
-            'show_previous_button' => ($page > 1 ? true : false),
-            'previous_page' => $previous_page,
-
-            'next_page' => $next_page,
-            'show_next_button' => ($page < ($jobs['count']/$page_size) ? true : false),
-
-            'position' => sprintf("%d/%d", $page, ceil($jobs['count']/$page_size)),
-
-            'form' => $form->createView(),
+            'logo'                  => $package->getUrl('logo-login.png'),
+	        'status_images'         => $status_images,
+            'img_console'           => $package->getUrl('console.png'),
+            'job_count'             => $jobs['count'],
+            'jobs'                  => $jobs['results'],
+            'awx_url'               => $this->getParameter('awx.url'),
+            'show_previous_button'  => ($page > 1 ? true : false),
+            'previous_page'         => $previous_page,
+            'next_page'             => $next_page,
+            'show_next_button'      => ($page < ($jobs['count']/$page_size) ? true : false),
+            'position'              => sprintf("%d/%d", $page, ceil($jobs['count']/$page_size)),
+            'form'                  => $form->createView(),
         ]);
     }
 }

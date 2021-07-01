@@ -39,15 +39,11 @@
                         <td>{{ job.started|date("d/m/Y H\\hi", "Europe/Paris") }}</td>
                         <td>{{ job.finished|date("d/m/Y H\\hi", "Europe/Paris")  }}</td>
                         <td class="text-center">{{ job.elapsed }}s</td>
-                        <td class="text-center">{% if job.status == 'failed' %}
-                            <img label="{{ job.status }}" src="{{ img_failed }}" height="20px" />
-                            {% else %}
-                            <img label="{{ job.status }}" src="{{ img_success }}" height="20px" />
-                            {% endif %}
-                            {# <a href="http://awx.lepesant.com/#/jobs/playbook/{{ job.id }}/output/" target="_new"> #}
-                            <a href="{{ job.id | awxlink(awx_url) }}" target="_new">
-                                <img label="Bootstrap" src="{{ img_console }}" width="20px" />
-                            </a>
+                        <td class="text-center">
+<img label="{{ job.status }}" alt="{{ job.status }}" src="{{ status_images[ job.status ] }}" height="20px" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ job.status|capitalize }}">
+<a href="{{ job.id | awxlink(awx_url) }}" target="_new" data-bs-toggle="tooltip" data-bs-placement="right" title="Go to logs">
+    <img label="Bootstrap" src="{{ img_console }}" width="20px" />
+</a>
                         </td>
                     </tr>
 {% endfor %}
