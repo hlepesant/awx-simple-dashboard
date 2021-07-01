@@ -3,6 +3,9 @@
 ## [Unreleased]
 
 
+## 0.0.4
+ - Change FAILED image
+
 ## 0.0.3
  - Add more image of job status
  - Add tooltips on job status
