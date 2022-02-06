@@ -9,8 +9,14 @@
 # TOWER_USERNAME=$_username TOWER_PASSWORD=$_password TOWER_HOST=<AWX URL> awx login
 
 parameters:
-    awx.token: 'hc5FIGZuwhIUEkmJASA45qM60dgb18'
-    awx.url: 'http://192.168.0.225'
+    awx.token: 'tR6WVKxsHsa8CvgNgJGWfT7zeN7bvI'
+    awx.url: 'http://192.168.0.240'
+    git.user: '%env(GIT_AUTH_USER)%'
+    git.pass: '%env(GIT_AUTH_PASS)%'
+    git.scheme: 'https'
+    git.host: 'gitlab.lepesant.com'
+    git.path: 'test/'
+    git.repo: 'app-deployment-config'
 
 services:
     # default configuration for services in *this* file
@@ -35,3 +41,9 @@ services:
         arguments:
             $token: '%awx.token%'
             $awx_url: '%awx.url%'
+
+    App\Service\GitConfig:
+        arguments:
+            $git_url: '%git.scheme%://%git.user%:%git.pass%@%git.host%/%git.path%%git.repo%.git'
+            $git_repo: '%git.repo%'
+            $rootPath: '%kernel.project_dir%'

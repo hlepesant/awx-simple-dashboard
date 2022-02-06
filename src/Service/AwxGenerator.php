@@ -10,7 +10,7 @@ Class AwxGenerator
 
     public function __construct(string $awx_url, string $token)
     {
-	$this->awx_url = $awx_url;
+	      $this->awx_url = $awx_url;
         $this->token = $token;
     }
 
