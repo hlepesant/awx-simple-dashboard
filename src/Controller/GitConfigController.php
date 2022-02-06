@@ -14,7 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use App\Form\Type\ConfigType;
 use App\Service\GitConfig;
+use App\Entity\ConfOpts;
 
 class GitConfigController extends AbstractController
 {
@@ -34,27 +36,39 @@ class GitConfigController extends AbstractController
     #[Route('/config', name: 'git_show')]
     public function index(Request $request, GitConfig $gitConfig): Response
     {
-        $_envs = $gitConfig->getContent();
+        $_env = null;
+        $_app = null;
+        $_stack = null;
+        $_client = null;
 
-        $defaultData = ['env' => null];
+        if ($request->isMethod('POST')) {
+            if ( null !== $request->get('config') )  {
 
-        $form = $this->createFormBuilder($defaultData)
-            ->add('env', ChoiceType::class, [
-                'label' => 'Environment',
-                'choices'  => $_envs,
-                'multiple' => false,
-                'expanded' => false, 
-                'attr' => ['class' => 'form-control form-control-sm'],
-            ])
-            ->add('send', SubmitType::class)
-            ->getForm();
+                $config = $request->get('config');
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-          echo 'time to process files';
+                if ( array_key_exists('env', $config) ) $_env = $config['env'];
+                if ( array_key_exists('app', $config) ) $_app = $config['app'];
+                if ( array_key_exists('stack', $config) ) $_stack = $config['stack'];
+                if ( array_key_exists('client', $config) ) $_client = $config['client'];
+            }
         }
 
+        $conf = new ConfOpts();
+
+        $form = $this->createForm(ConfigType::class, $conf, array(
+            'env_choices' => $gitConfig->getEnvironments(),
+            'app_choices' => $gitConfig->getApplications($_env),
+            'stack_choices' => $gitConfig->getStacks($_env, $_stack),
+            'client_choices' => $gitConfig->getClients($_env, $_stack, $_client)
+        ));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $conf = $form->getData();
+            print_r($conf);
+            exit;
+        }
+
+        $form->handleRequest($request);
 
 /*
         foreach( $_envs as $_env ) {
@@ -66,10 +80,10 @@ class GitConfigController extends AbstractController
         ]);
 */
         $package = new PathPackage('/static/images', new StaticVersionStrategy('v1'));
-        
-        return $this->render('config/index.html.twig', [
+
+        return $this->renderForm('config/index.html.twig', [
             'logo'                  => $package->getUrl('logo-login.png'),
-            'form'                  => $form->createView(),
+            'form'                  => $form,
         ]);
     }
 }

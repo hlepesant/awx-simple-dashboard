@@ -47,19 +47,56 @@ Class GitConfig
         return $process->getExitCode();
     }
 
-    public function getContent(string $folder = ''): array
+    private function getDirectories($path): array
     {
-        $pwd = sprintf('%s/%s', $this->srcPath, $this->git_repo);
-
+        $dirs = array();
         $finder = new Finder();
-
-        $finder->directories()->depth(0)->in($pwd);
+        $finder->directories()->depth(0)->in($path)->sortByName();
 
         if ($finder->hasResults()) {
-          return iterator_to_array($finder);
+            foreach($finder as $d) {
+                $dirs[$d->getRelativePathname()] = $d->getRelativePathname();
+            }
         }
 
-        return array();
+        return $dirs;
+    }
+
+    public function getEnvironments(): array
+    {
+        $pwd = sprintf('%s/%s', $this->srcPath, $this->git_repo);
+        return $this->getDirectories($pwd);
+    }
+
+    public function getApplications(string $environment=null): array
+    {
+        if (is_null($environment)) return array();
+
+        $pwd = sprintf('%s/%s/%s', $this->srcPath, $this->git_repo, $environment);
+        return $this->getDirectories($pwd);
+    }
+
+    public function getStacks(string $environment=null, string $app=null): array
+    {
+        if (
+            is_null($environment) ||
+            is_null($app)
+        ) return array();
+
+        $pwd = sprintf('%s/%s/%s/%s', $this->srcPath, $this->git_repo, $environment, $app);
+        return $this->getDirectories($pwd);
+    }
+
+    public function getClients(string $environment=null, string $app=null, string $stack=null): array
+    {
+        if (
+            is_null($environment) ||
+            is_null($app) ||
+            is_null($stack)
+        ) return array();
+
+        $pwd = sprintf('%s/%s/%s/%s', $this->srcPath, $this->git_repo, $environment, $app);
+        return $this->getDirectories($pwd);
     }
 }
 

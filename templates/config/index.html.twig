@@ -11,8 +11,8 @@
             </a>
         </div>
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/config/get" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            Config Reader
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            Task Dashboard
             </a>
         </div>
     </div>
@@ -26,7 +26,7 @@
 
     <div class="container-xl">
         <div class="table-responsive">
-{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+{{ form_start(form, {'method': 'POST', 'attr': {}}) }}
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -38,9 +38,9 @@
 
                     <tr>
                         <td scope="col">{{ form_widget(form.env, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
-                        <td scope="col"></td>
-                        <td scope="col"></td>
-                        <td scope="col"></td>
+                        <td scope="col">{{ form_widget(form.app, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
+                        <td scope="col">{{ form_widget(form.stack, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
+                        <td scope="col">{{ form_widget(form.client, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
                         <td scope="col">{{ form_widget(form.send, { 'attr': {'class': 'btn btn-primary btn-sm' }}) }}</td>
                     </tr>
 
@@ -49,7 +49,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="5">
                     </td>
                 </tr>
                 </tfoot>
