@@ -47,11 +47,11 @@ Class GitConfig
         return $process->getExitCode();
     }
 
-    private function getDirectories($path): array
+    private function getDirectories(string $path): array
     {
         $dirs = array();
         $finder = new Finder();
-        $finder->directories()->depth(0)->in($path)->sortByName();
+        $finder->directories()->depth(0)->in($path)->notName('ansistrano')->sortByName();
 
         if ($finder->hasResults()) {
             foreach($finder as $d) {
@@ -95,7 +95,7 @@ Class GitConfig
             is_null($stack)
         ) return array();
 
-        $pwd = sprintf('%s/%s/%s/%s', $this->srcPath, $this->git_repo, $environment, $app);
+        $pwd = sprintf('%s/%s/%s/%s/%s', $this->srcPath, $this->git_repo, $environment, $app, $stack);
         return $this->getDirectories($pwd);
     }
 }

@@ -46,6 +46,8 @@ class GitConfigController extends AbstractController
 
                 $config = $request->get('config');
 
+                var_dump($config);
+
                 if ( array_key_exists('env', $config) ) $_env = $config['env'];
                 if ( array_key_exists('app', $config) ) $_app = $config['app'];
                 if ( array_key_exists('stack', $config) ) $_stack = $config['stack'];
@@ -58,8 +60,8 @@ class GitConfigController extends AbstractController
         $form = $this->createForm(ConfigType::class, $conf, array(
             'env_choices' => $gitConfig->getEnvironments(),
             'app_choices' => $gitConfig->getApplications($_env),
-            'stack_choices' => $gitConfig->getStacks($_env, $_stack),
-            'client_choices' => $gitConfig->getClients($_env, $_stack, $_client)
+            'stack_choices' => $gitConfig->getStacks($_env, $_app),
+            'client_choices' => $gitConfig->getClients($_env, $_app, $_stack)
         ));
 
         if ($form->isSubmitted() && $form->isValid()) {
