@@ -30,6 +30,8 @@ class ConfigType extends AbstractType
                 'choices' => $options['env_choices'],  
                 'multiple' => false,
                 'expanded' => false, 
+                'required' => false,
+                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('app', ChoiceType::class, [
@@ -37,6 +39,8 @@ class ConfigType extends AbstractType
                 'choices' => $options['app_choices'],  
                 'multiple' => false,
                 'expanded' => false, 
+                'required' => false,
+                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('stack', ChoiceType::class, [
@@ -44,6 +48,8 @@ class ConfigType extends AbstractType
                 'choices' => $options['stack_choices'],  
                 'multiple' => false,
                 'expanded' => false, 
+                'required' => false,
+                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('client', ChoiceType::class, [
@@ -51,6 +57,8 @@ class ConfigType extends AbstractType
                 'choices' => $options['client_choices'],  
                 'multiple' => false,
                 'expanded' => false, 
+                'required' => false,
+                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('send', SubmitType::class)

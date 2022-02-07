@@ -54,6 +54,7 @@ Class GitConfig
         $finder->directories()->depth(0)->in($path)->notName('ansistrano')->sortByName();
 
         if ($finder->hasResults()) {
+            // $dirs[] = '-- select --';
             foreach($finder as $d) {
                 $dirs[$d->getRelativePathname()] = $d->getRelativePathname();
             }

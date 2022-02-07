@@ -46,7 +46,7 @@ class GitConfigController extends AbstractController
 
                 $config = $request->get('config');
 
-                var_dump($config);
+                # var_dump($config);
 
                 if ( array_key_exists('env', $config) ) $_env = $config['env'];
                 if ( array_key_exists('app', $config) ) $_app = $config['app'];
