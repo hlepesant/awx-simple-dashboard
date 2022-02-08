@@ -26,7 +26,7 @@
 
     <div class="container-xl">
         <div class="table-responsive">
-{{ form_start(form, {'method': 'POST', 'attr': {}}) }}
+{{ form_start(form, {'method': 'POST', 'attr': {'id': 'form_config'}}) }}
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -41,7 +41,7 @@
                         <td scope="col">{{ form_widget(form.app, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
                         <td scope="col">{{ form_widget(form.stack, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
                         <td scope="col">{{ form_widget(form.client, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
-                        <td scope="col">{{ form_widget(form.send, { 'attr': {'class': 'btn btn-primary btn-sm' }}) }}</td>
+                        {# <td scope="col">{{ form_widget(form.send, { 'attr': {'class': 'btn btn-primary btn-sm' }}) }}</td> #}
                     </tr>
 
                 </thead>
@@ -59,4 +59,8 @@
     </div>
 </main>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('config') }}
 {% endblock %}

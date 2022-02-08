@@ -61,7 +61,7 @@ class ConfigType extends AbstractType
                 'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
-            ->add('send', SubmitType::class)
+            // ->add('send', SubmitType::class)
         ;
     }
 

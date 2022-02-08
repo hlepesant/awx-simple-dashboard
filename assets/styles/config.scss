@@ -1,0 +1,20 @@
+
+.box-title {
+color: black;
+text-align: center;
+text-transform: capitalize;
+font-weight: bold;
+}
+
+.box-row {
+height: 40px;
+border-top: 1px solid black;
+border-left: 1px solid black;
+border-right: 1px solid black;
+}
+
+.td-center {
+text-align: center;
+}
+
+@import '~bootstrap/scss/bootstrap';
