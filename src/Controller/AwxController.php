@@ -51,7 +51,9 @@ class AwxController extends AbstractController
         $jobs = $awxGenerator->getAwxJobs($order_by, $page_size, $page);
 
         if ( empty($jobs) ) {
-            return $this->redirectToRoute('awx');
+            // return $this->redirectToRoute('awx');
+            $jobs['count'] = 0;
+            $jobs['results'] = null;
         }
 
         $previous_page = $this->generateUrl( 'awx', [
@@ -63,21 +65,21 @@ class AwxController extends AbstractController
         ]);
 
         $package = new PathPackage('/static/images', new StaticVersionStrategy('v1'));
-	    $status_images = array(
-	    	'canceled' 	    => $package->getUrl('canceled.png'),
-	    	'error' 	    => $package->getUrl('error.png'),
-	    	'failed' 	    => $package->getUrl('failed.png'),
-	    	'new' 		    => $package->getUrl('new.png'),
-	    	'pending' 	    => $package->getUrl('pending.png'),
-	    	'running' 	    => $package->getUrl('running.png'),
-	    	'successful' 	=> $package->getUrl('successful.png'),
-	    	'waiting' 	    => $package->getUrl('waiting.png'),
-	    	'warning' 	    => $package->getUrl('warning.png'),
-	    );
+	      $status_images = array(
+	      	  'canceled' 	    => $package->getUrl('canceled.png'),
+	      	  'error' 	      => $package->getUrl('error.png'),
+	      	  'failed' 	      => $package->getUrl('failed.png'),
+	      	  'new' 		      => $package->getUrl('new.png'),
+	      	  'pending' 	    => $package->getUrl('pending.png'),
+	      	  'running' 	    => $package->getUrl('running.png'),
+	      	  'successful' 	  => $package->getUrl('successful.png'),
+	      	  'waiting' 	    => $package->getUrl('waiting.png'),
+	      	  'warning' 	    => $package->getUrl('warning.png'),
+	      );
 
         return $this->render('awx/index.html.twig', [
             'logo'                  => $package->getUrl('logo-login.png'),
-	        'status_images'         => $status_images,
+	          'status_images'         => $status_images,
             'img_console'           => $package->getUrl('console.png'),
             'job_count'             => $jobs['count'],
             'jobs'                  => $jobs['results'],

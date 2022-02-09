@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AWX List jobs!{% endblock %}
+
+{% block body %}
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{{ path('awx') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img label="Bootstrap" src="{{ logo }}" width="90px" />
+            </a>
+        </div>
+        <div class="d-flex flex-wrap align-items-center justify-content-lg-end">
+            <a href="{{ path('awx') }}" class="text-decoration-none text-end link-warning"> Tasks Dashboard </a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <br />
+        <p class="fs-1">Config Reader</p>
+    </div>
+
+    <div class="container-xl">
+        <div class="table-responsive">
+{{ form_start(form, {'method': 'POST', 'attr': {'id': 'form_config'}}) }}
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Environnement</th>
+                        <th scope="col">Application</th>
+                        <th scope="col">Stack</th>
+                        <th colspan="2" scope="col">Client</th>
+                    </tr>
+
+                    <tr>
+                        <td scope="col">{{ form_widget(form.env, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
+                        <td scope="col">{{ form_widget(form.app, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
+                        <td scope="col">{{ form_widget(form.stack, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
+                        <td scope="col">{{ form_widget(form.client, { 'attr': {'class': 'form-select form-select-sm' }}) }}</td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="5"><div class="container">
+                    {% for k,v in options  %}
+                    {%  if not (k starts with 'ansistrano') %}
+                    <b>{{ k }}</b> : 
+                    {%    if 'password' in k %}
+                    *****************
+                    {%    else %}
+                    {{ v }}
+                    {%    endif  %}<br />
+                    {%  endif  %}
+                    {% else  %}
+                    &#8593; Sélectionner les informations ci-dessus &#8593;
+                    {% endfor  %}
+                    </div></td>
+                </tr>
+                </tbody>
+                <tfoot>
+{% if options |length %}
+                <tr>
+                <td colspan="4"><a href="{{ path('git_show') }}">R.A.Z</a></td>
+                </tr>
+{% endif %}
+                </tfoot>
+            </table>
+{{ form_end(form) }}
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('config') }}
+{% endblock %}
