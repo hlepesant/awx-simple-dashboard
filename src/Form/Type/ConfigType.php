@@ -15,15 +15,6 @@ class ConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /*
-        $defaultData = [
-          'env' => null,
-          'app' => null,
-          'stack' => null,
-          'client' => null
-        ];
-         */
-
         $builder
             ->add('env', ChoiceType::class, [
                 'label' => 'Environment',
@@ -31,7 +22,6 @@ class ConfigType extends AbstractType
                 'multiple' => false,
                 'expanded' => false, 
                 'required' => false,
-                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('app', ChoiceType::class, [
@@ -40,7 +30,6 @@ class ConfigType extends AbstractType
                 'multiple' => false,
                 'expanded' => false, 
                 'required' => false,
-                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('stack', ChoiceType::class, [
@@ -49,7 +38,6 @@ class ConfigType extends AbstractType
                 'multiple' => false,
                 'expanded' => false, 
                 'required' => false,
-                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             ->add('client', ChoiceType::class, [
@@ -58,7 +46,6 @@ class ConfigType extends AbstractType
                 'multiple' => false,
                 'expanded' => false, 
                 'required' => false,
-                'empty_data' => '-- select --',
                 'attr' => ['class' => 'form-control form-control-sm'],
             ])
             // ->add('send', SubmitType::class)

@@ -40,18 +40,26 @@ class GitConfigController extends AbstractController
         $_app = null;
         $_stack = null;
         $_client = null;
+        $_full_config = array();
 
         if ($request->isMethod('POST')) {
             if ( null !== $request->get('config') )  {
 
                 $config = $request->get('config');
 
-                # var_dump($config);
-
                 if ( array_key_exists('env', $config) ) $_env = $config['env'];
                 if ( array_key_exists('app', $config) ) $_app = $config['app'];
                 if ( array_key_exists('stack', $config) ) $_stack = $config['stack'];
                 if ( array_key_exists('client', $config) ) $_client = $config['client'];
+
+                if ( $_env && $_app && $_stack && $_client ) {
+
+                    $_app_default = $gitConfig->getAppDefault($_env, $_app);
+                    $_stack_default = $gitConfig->getStackDefault($_env, $_app, $_stack);
+                    $_client_main = $gitConfig->getClientMain($_env, $_app, $_stack, $_client);
+
+                    $_full_config = array_merge( $_app_default, $_stack_default, $_client_main);
+                }
             }
         }
 
@@ -72,20 +80,12 @@ class GitConfigController extends AbstractController
 
         $form->handleRequest($request);
 
-/*
-        foreach( $_envs as $_env ) {
-          print_r($_env->getRelativePathname());
-        }
-
-        return $this->render('config/index.html.twig', [
-            'controller_name' => 'GitConfigController',
-        ]);
-*/
         $package = new PathPackage('/static/images', new StaticVersionStrategy('v1'));
 
         return $this->renderForm('config/index.html.twig', [
             'logo'                  => $package->getUrl('logo-login.png'),
             'form'                  => $form,
+            'options'               => $_full_config,
         ]);
     }
 }

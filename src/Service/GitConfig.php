@@ -12,27 +12,30 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
+
 
 Class GitConfig
 {
     private $git_url;
     private $git_repo;
     private $srcPath;
+    private $fs;
 
     public function __construct(string $git_url, string $git_repo, string $rootPath)
     {
 	      $this->git_url = $git_url;
 	      $this->git_repo = $git_repo;
 	      $this->srcPath = sprintf("%s/sources", $rootPath);
+        $this->fs = new Filesystem();
     }
 
     public function getRepo(): int
     {
         $pwd = sprintf('%s/%s', $this->srcPath, $this->git_repo);
 
-        $filesystem = new Filesystem();
 
-        if ( $filesystem->exists($pwd) ) {
+        if ( $this->fs->exists($pwd) ) {
           $process = new Process(['git', 'pull'], $pwd);
         } else {
           $process = new Process(['git', 'clone', $this->git_url, $pwd]);
@@ -98,6 +101,49 @@ Class GitConfig
 
         $pwd = sprintf('%s/%s/%s/%s/%s', $this->srcPath, $this->git_repo, $environment, $app, $stack);
         return $this->getDirectories($pwd);
+    }
+
+    public function getGitRepo(): string
+    {
+        return $this->git_repo;
+    }
+
+    private function readYaml(string $path): mixed
+    {
+        return Yaml::parseFile( $path);
+    }
+
+    public function getAppDefault(string $env, string $app): array
+    {
+        $p = sprintf("%s/%s/%s/%s/default.yml", $this->srcPath, $this->git_repo, $env, $app);
+
+        if ( $this->fs->exists($p) )
+        {
+            return $this->readYaml($p);
+        }
+        return array();
+    }
+
+    public function getStackDefault(string $env, string $app, string $stack): array
+    {
+        $p = sprintf("%s/%s/%s/%s/%s/default.yml", $this->srcPath, $this->git_repo, $env, $app, $stack);
+
+        if ( $this->fs->exists($p) )
+        {
+            return $this->readYaml($p);
+        }
+        return array();
+    }
+
+    public function getClientMain(string $env, string $app, string $stack, string $client): array
+    {
+        $p = sprintf("%s/%s/%s/%s/%s/%s/main.yml", $this->srcPath, $this->git_repo, $env, $app, $stack, $client);
+
+        if ( $this->fs->exists($p) )
+        {
+            return $this->readYaml($p);
+        }
+        return array();
     }
 }
 

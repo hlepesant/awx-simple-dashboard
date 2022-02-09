@@ -23,11 +23,11 @@ $("#config_app").change(function() {
 
 $("#config_stack").change(function() {
   console.log('config.stack changed, submitting');
+  $("#config_client").val(0);
   $("#form_config").submit();
 });
 
 $("#config_client").change(function() {
   console.log('config.client changed, submitting');
-  $("#config_client").val(0);
   $("#form_config").submit();
 });
