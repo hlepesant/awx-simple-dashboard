@@ -19,7 +19,7 @@ Class AwxGenerator
 
     public function getAwxJobs(string $sorted_by, int $page_size, int $page): array
     {
-        $client = HttpClient::createForBaseUri($this->awx_url, [
+        $client = HttpClient::createForBaseUri($this->awx_api, [
             'auth_bearer' => $this->token,
         ]); 
 
