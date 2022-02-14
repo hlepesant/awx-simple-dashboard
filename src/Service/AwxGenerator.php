@@ -23,7 +23,7 @@ Class AwxGenerator
             'auth_bearer' => $this->token,
         ]); 
 
-        $response = $client->request('GET', $this->awx_api.'/api/v2/jobs', [
+        $response = $client->request('GET', $this->awx_api.'/api/v2/jobs/', [
             'query' => [
                 'order_by' => sprintf('%s', $sorted_by),
                 'page_size' => $page_size,
