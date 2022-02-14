@@ -11,6 +11,7 @@
 parameters:
     awx.token: 'tR6WVKxsHsa8CvgNgJGWfT7zeN7bvI'
     awx.url: 'http://192.168.0.240'
+    awx.api: 'http://192.168.0.240'
     git.user: '%env(GIT_AUTH_USER)%'
     git.pass: '%env(GIT_AUTH_PASS)%'
     git.scheme: 'https'
@@ -41,6 +42,7 @@ services:
         arguments:
             $token: '%awx.token%'
             $awx_url: '%awx.url%'
+            $awx_api: '%awx.api%'
 
     App\Service\GitConfig:
         arguments:
