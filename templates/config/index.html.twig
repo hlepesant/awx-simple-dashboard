@@ -51,7 +51,11 @@
                     {%    if 'password' in k %}
                     *****************
                     {%    else %}
+                    {%      if v is not iterable %}
                     {{ v }}
+                    {%      else %}
+                    [{{ v | join(", ") }}]
+                    {%      endif  %}
                     {%    endif  %}<br />
                     {%  endif  %}
                     {% else  %}
