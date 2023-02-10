@@ -22,10 +22,8 @@ class SiloCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Inventory Silo')
-            ->setEntityLabelInPlural('Inventory Silos')
-            ->setEntityLabelInSingular('TimeZone Silo')
-            ->setEntityLabelInPlural('TimeZone Silos')
+            ->setEntityLabelInSingular('Silo')
+            ->setEntityLabelInPlural('Silos')
             ->setSearchFields(['name', 'text', 'name'])
             ->setSearchFields(['enabled', 'boolean', 'enabled'])
             ->setDefaultSort(['createdAt' => 'DESC'])

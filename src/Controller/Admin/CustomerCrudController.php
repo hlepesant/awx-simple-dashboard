@@ -22,8 +22,8 @@ class CustomerCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Silo Customer')
-            ->setEntityLabelInPlural('Silo Customers')
+            ->setEntityLabelInSingular('Customer')
+            ->setEntityLabelInPlural('Customers')
             ->setSearchFields(['name', 'text', 'name'])
             ->setSearchFields(['enabled', 'boolean', 'enabled'])
             ->setDefaultSort(['createdAt' => 'DESC'])
