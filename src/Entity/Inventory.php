@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\InventoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InventoryRepository::class)]
@@ -22,9 +24,18 @@ class Inventory
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'inventory')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Silo $silo = null;
+    #[ORM\OneToMany(mappedBy: 'inventory', targetEntity: Silo::class, orphanRemoval: true)]
+    private Collection $silos;
+
+    public function __construct()
+    {
+        $this->silos = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -67,14 +78,32 @@ class Inventory
         return $this;
     }
 
-    public function getSilo(): ?Silo
+    /**
+     * @return Collection<int, Silo>
+     */
+    public function getSilos(): Collection
     {
-        return $this->silo;
+        return $this->silos;
     }
 
-    public function setSilo(?Silo $silo): self
+    public function addSilo(Silo $silo): self
     {
-        $this->silo = $silo;
+        if (!$this->silos->contains($silo)) {
+            $this->silos->add($silo);
+            $silo->setInventory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSilo(Silo $silo): self
+    {
+        if ($this->silos->removeElement($silo)) {
+            // set the owning side to null (unless already changed)
+            if ($silo->getInventory() === $this) {
+                $silo->setInventory(null);
+            }
+        }
 
         return $this;
     }

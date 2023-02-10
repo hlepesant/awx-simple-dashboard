@@ -19,7 +19,7 @@ use App\Service\AwxGenerator;
 
 class AwxController extends AbstractController
 {
-    #[Route('/{page<\d+>?1}', name: 'awx')]
+    #[Route('/awx/{page<\d+>?1}', name: 'awx')]
     public function index(Request $request, AwxGenerator $awxGenerator, int $page=1): Response
     {
         $order_by = '-started';

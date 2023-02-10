@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CustomerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
@@ -16,14 +18,23 @@ class Customer
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?bool $enabled = null;
+    #[ORM\ManyToOne(inversedBy: 'customers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Silo $silo = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $time_zone = null;
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: AwxJob::class)]
+    private Collection $awxJobs;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $enabled = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct()
+    {
+        $this->awxJobs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -42,26 +53,56 @@ class Customer
         return $this;
     }
 
+    public function getSilo(): ?Silo
+    {
+        return $this->silo;
+    }
+
+    public function setSilo(?Silo $silo): self
+    {
+        $this->silo = $silo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AwxJob>
+     */
+    public function getAwxJobs(): Collection
+    {
+        return $this->awxJobs;
+    }
+
+    public function addAwxJob(AwxJob $awxJob): self
+    {
+        if (!$this->awxJobs->contains($awxJob)) {
+            $this->awxJobs->add($awxJob);
+            $awxJob->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAwxJob(AwxJob $awxJob): self
+    {
+        if ($this->awxJobs->removeElement($awxJob)) {
+            // set the owning side to null (unless already changed)
+            if ($awxJob->getCustomer() === $this) {
+                $awxJob->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function isEnabled(): ?bool
     {
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled): self
+    public function setEnabled(?bool $enabled): self
     {
         $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    public function getTimeZone(): ?string
-    {
-        return $this->time_zone;
-    }
-
-    public function setTimeZone(string $time_zone): self
-    {
-        $this->time_zone = $time_zone;
 
         return $this;
     }

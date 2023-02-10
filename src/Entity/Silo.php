@@ -19,20 +19,32 @@ class Silo
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?bool $enabled = null;
-
-    #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $quit = null;
+    #[ORM\ManyToOne(inversedBy: 'silos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Inventory $inventory = null;
 
-    #[ORM\OneToMany(mappedBy: 'silo', targetEntity: Inventory::class, orphanRemoval: true)]
-    private Collection $inventory;
+    #[ORM\ManyToOne]
+    private ?TimeZone $time_zone = null;
+
+    #[ORM\OneToMany(mappedBy: 'silo', targetEntity: Customer::class)]
+    private Collection $customers;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $enabled = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $dedicated = null;
 
     public function __construct()
     {
-        $this->inventory = new ArrayCollection();
+        $this->customers = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -52,18 +64,6 @@ class Silo
         return $this;
     }
 
-    public function isEnabled(): ?bool
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled(bool $enabled): self
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -76,32 +76,80 @@ class Silo
         return $this;
     }
 
-    /**
-     * @return Collection<int, Inventory>
-     */
-    public function getInventory(): Collection
+    public function getInventory(): ?Inventory
     {
         return $this->inventory;
     }
 
-    public function addInventory(Inventory $inventory): self
+    public function setInventory(?Inventory $inventory): self
     {
-        if (!$this->inventory->contains($inventory)) {
-            $this->inventory->add($inventory);
-            $inventory->setSilo($this);
+        $this->inventory = $inventory;
+
+        return $this;
+    }
+
+    public function getTimeZone(): ?TimeZone
+    {
+        return $this->time_zone;
+    }
+
+    public function setTimeZone(?TimeZone $time_zone): self
+    {
+        $this->time_zone = $time_zone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Customer>
+     */
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
+    }
+
+    public function addCustomer(Customer $customer): self
+    {
+        if (!$this->customers->contains($customer)) {
+            $this->customers->add($customer);
+            $customer->setSilo($this);
         }
 
         return $this;
     }
 
-    public function removeInventory(Inventory $inventory): self
+    public function removeCustomer(Customer $customer): self
     {
-        if ($this->inventory->removeElement($inventory)) {
+        if ($this->customers->removeElement($customer)) {
             // set the owning side to null (unless already changed)
-            if ($inventory->getSilo() === $this) {
-                $inventory->setSilo(null);
+            if ($customer->getSilo() === $this) {
+                $customer->setSilo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(?bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function isDedicated(): ?bool
+    {
+        return $this->dedicated;
+    }
+
+    public function setDedicated(bool $dedicated): self
+    {
+        $this->dedicated = $dedicated;
 
         return $this;
     }
